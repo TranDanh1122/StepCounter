@@ -12,8 +12,11 @@ class MainTableViewController: UIViewController {
     private var viewModel: MainTableViewModel = MainTableViewModel()
     private var dataSource: CMPedometerData? {
         didSet {
+            guard let dataSource = dataSource else { return }
             NotificationCenter.default.post(name: Notification.Name.init(rawValue: "reloadTableCellDataWhenShake"), object: nil, userInfo: ["dataSource": dataSource])
         }
+        
+        
     }
     // config view
     override func viewDidLoad() {
