@@ -18,7 +18,7 @@ class CollectionViewCustomLayout: UICollectionViewFlowLayout {
         //lướt qua phải
         if collection.contentOffset.x > oldOffset, velocity.x > 0.0 {
             currentPage = min(currentPage + 1, numberOfItemInSection-1)
-        }else if collection.contentOffset.x < oldOffset, velocity.x < 0.0 { //lướt qua trái
+        } else if collection.contentOffset.x < oldOffset, velocity.x < 0.0 { //lướt qua trái
             currentPage = max(currentPage - 1, 0)
         }
         // chiều rôngj của collection
@@ -43,8 +43,9 @@ class OneWeekStepDetailCell: UITableViewCell {
     @IBOutlet private weak var collectionView: UICollectionView!
     private var collectionViewDataSource: CMPedometerData? {
         didSet {
-            print("this is reload data point at \(IndexPath(row: layout.currentPage, section: 0))")
-            collectionView.reloadItems(at: [IndexPath(row: currentViewPage, section: 0)])
+            guard let collectionViewDataSource = collectionViewDataSource else { return  }
+            let rowNeedUpdate = (Date().timeBetweenTodayAnd(anotherDay: collectionViewDataSource.endDate)).toInt()
+            collectionView.reloadItems(at: [IndexPath(row: rowNeedUpdate, section: 0)])
         }
     }
     private var notificationName = Notification.Name.init(rawValue: "reloadTableCellDataWhenShake")
@@ -63,7 +64,7 @@ class OneWeekStepDetailCell: UITableViewCell {
         observableUpdateDataEvent()
     }
     override func layoutSubviews() {
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 416)
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 420)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         layout.scrollDirection = .horizontal
@@ -82,18 +83,15 @@ class OneWeekStepDetailCell: UITableViewCell {
         collectionView.register(UINib(nibName: cellName, bundle: nil), forCellWithReuseIdentifier: cellName)
     }
     // config data of view
-    func reloadData(data: CMPedometerData?){
+    func reloadData(data: CMPedometerData?) {
         collectionViewDataSource = data
-        
     }
-    private func observableUpdateDataEvent(){
+    private func observableUpdateDataEvent() {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadDataWhenDataSourceUpdate(_:)), name: notificationName, object: nil)
     }
-    @objc func reloadDataWhenDataSourceUpdate(_ noti : Notification) {
+    @objc func reloadDataWhenDataSourceUpdate(_ noti: Notification) {
         if let data = noti.userInfo?["dataSource"] as? CMPedometerData {
-            DispatchQueue.main.async {
-                self.collectionViewDataSource = data
-            }
+            DispatchQueue.main.async { self.collectionViewDataSource = data }
         } else {
             print("data error")
         }

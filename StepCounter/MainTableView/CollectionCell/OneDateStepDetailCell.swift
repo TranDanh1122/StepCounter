@@ -36,19 +36,14 @@ class OneDateStepDetailCell: UICollectionViewCell {
         layoutIfNeeded()
         drawProgressRing()
         guard let data = data else { return  }
-        guard let distance = data.distance, let pace = data.averageActivePace else {return}
-        self.mile.text = ("\(String(format: "%.1f",(distance.doubleValue / 1000))) mil")
+        self.mile.text = data.mile
         self.sumStep.text = data.numberOfSteps.stringValue
-        if pace.doubleValue != 0 {
-            self.time.text = ("\((distance.doubleValue * pace.doubleValue / 60).toString()) m")
-        }else {
-            self.time.text = "_:_"
-        }
+        self.time.text = data.time
         self.timeline.text = data.endDate.formatDate()
-        self.caloBurned.text = ("\((distance.doubleValue * 70.0 / 1000 * 0.95 ).toString()) kcal")
-        self.circleShape.strokeEnd = data.numberOfSteps.doubleValue / 10000
+        self.caloBurned.text = data.calories
+        self.circleShape.strokeEnd = data.stokeEnd
     }
-    private func drawProgressRing(){
+    private func drawProgressRing() {
         //UIBezierPath
         let circlePath = UIBezierPath(arcCenter: .zero,
                                       radius: self.infomationCirleEdgeView.bounds.width / 2 - 20 ,

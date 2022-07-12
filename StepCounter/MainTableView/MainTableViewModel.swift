@@ -24,6 +24,7 @@ class MainTableViewModel {
     // initilation
     init() {
         getTodayStep()
+        getStepDetailOf(date: Date())
     }
     //custom  func
     private func getTodayStep() {

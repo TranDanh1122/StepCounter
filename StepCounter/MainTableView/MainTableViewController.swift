@@ -27,17 +27,17 @@ class MainTableViewController: UIViewController {
         tableView.delegate = self
         register(nibName: "OneWeekStepDetailCell", cellID: "OneWeekStepDetailCell")
     }
-    private func register(nibName: String, cellID: String){
+    private func register(nibName: String, cellID: String) {
         tableView.register(UINib(nibName: nibName, bundle: nil), forCellReuseIdentifier: cellID)
     }
     deinit {
         viewModel.notificationCenter.removeObserver(self, name: viewModel.notificationName, object: nil)
     }
     //subcribe data from view model
-    private func setupSubcribeObserveble(){
+    private func setupSubcribeObserveble() {
         viewModel.notificationCenter.addObserver(self, selector: #selector(observebleOnNextHanle(_:)), name: viewModel.notificationName, object: nil)
     }
-    @objc func observebleOnNextHanle(_ noti: Notification){
+    @objc func observebleOnNextHanle(_ noti: Notification) {
         if let data = noti.userInfo?[viewModel.notificationDataKey] as? CMPedometerData {
             dataSource = data
         } else {
@@ -58,7 +58,7 @@ extension MainTableViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 416
+        return 425
     }
 }
 extension MainTableViewController: OneWeekStepDetailCellDelegate {
