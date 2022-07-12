@@ -30,10 +30,13 @@ class MainTableViewController: UIViewController {
     private func register(nibName: String, cellID: String) {
         tableView.register(UINib(nibName: nibName, bundle: nil), forCellReuseIdentifier: cellID)
     }
+    // MARK: TestMark
     deinit {
+        // TODO: Test todo
         viewModel.notificationCenter.removeObserver(self, name: viewModel.notificationName, object: nil)
     }
     //subcribe data from view model
+    // FIXME: Test fixme
     private func setupSubcribeObserveble() {
         viewModel.notificationCenter.addObserver(self, selector: #selector(observebleOnNextHanle(_:)), name: viewModel.notificationName, object: nil)
     }
@@ -58,7 +61,7 @@ extension MainTableViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 425
+        return 420
     }
 }
 extension MainTableViewController: OneWeekStepDetailCellDelegate {

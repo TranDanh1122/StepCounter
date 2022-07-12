@@ -16,7 +16,7 @@ extension Double {
     }
 }
 extension Date {
-
+    
     var startOfThisDate: Date {
         return Calendar.current.startOfDay(for: self)
     }
@@ -42,20 +42,23 @@ extension Date {
         if let today = formatter.date(from: todayString),let anotherDay = formatter.date(from: anotherDayString) {
             return (today.endOfDay - anotherDay.startOfThisDate) / (60 * 60 * 24)
         }
-       return 0
+        return 0
     }
 }
 extension CMPedometerData {
     var distanceUnW: NSNumber {
         guard let distanceUnW = self.distance else { return 0 }
-       return distanceUnW
+        return distanceUnW
     }
     var mile: String {
-        return ("\(String(format: "%.1f",(distanceUnW.doubleValue / 1000))) mil")
+        let distance = distanceUnW.doubleValue / 1000
+        let mile = numberFormat(with: .decimal, number: distance)
+        return "\(mile) mil"
     }
     var time: String {
         if let pace = self.averageActivePace, pace.doubleValue != 0 {
-           return ("\((distanceUnW.doubleValue * pace.doubleValue / 60).toString()) m")
+            let time = (distanceUnW.doubleValue * pace.doubleValue / 60).toString()
+            return ("\(time) m")
         } else {
             return "_:_"
         }
@@ -65,5 +68,17 @@ extension CMPedometerData {
     }
     var stokeEnd: Double {
         return self.numberOfSteps.doubleValue / 10000
+    }
+    var sumStep: String {
+        let steps = numberFormat(with: .decimal, number: self.numberOfSteps)
+        return steps
+    }
+    func numberFormat<K>(with style: NumberFormatter.Style, number: K) -> String {
+        let numberNeedFormat = number
+        let numberFormatted = NumberFormatter()
+        numberFormatted.numberStyle = style
+        let result = numberFormatted.string(for: numberNeedFormat)
+        guard let result = result else { return "0" }
+        return result
     }
 }

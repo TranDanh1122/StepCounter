@@ -28,38 +28,36 @@ class OneDateStepDetailCell: UICollectionViewCell {
     private var circleShape: CAShapeLayer = CAShapeLayer()
     override func awakeFromNib() {
         super.awakeFromNib()
-        layoutIfNeeded()
-        drawProgressRing()
     }
     func reloadData(data: CMPedometerData?) {
         dataOfCell = data
         layoutIfNeeded()
-        drawProgressRing()
         guard let data = data else { return  }
         self.mile.text = data.mile
-        self.sumStep.text = data.numberOfSteps.stringValue
+        self.sumStep.text = data.sumStep
         self.time.text = data.time
         self.timeline.text = data.endDate.formatDate()
         self.caloBurned.text = data.calories
-        self.circleShape.strokeEnd = data.stokeEnd
+        drawProgressRing()
+        self.circleShape.strokeEnd = 1.0
     }
     private func drawProgressRing() {
         //UIBezierPath
         let circlePath = UIBezierPath(arcCenter: .zero,
-                                      radius: self.infomationCirleEdgeView.bounds.width / 2 - 20 ,
+                                      radius: (self.infomationCirleEdgeView.bounds.width - 25) / 2 ,
                                       startAngle: CGFloat(-0.5 * .pi),
                                       endAngle: CGFloat(1.5 * .pi),
-                                        clockwise: true)
-          // circle shape
+                                      clockwise: true)
+        // circle shape
         circleShape.position = self.infomationCirleEdgeView.center
         circleShape.path = circlePath.cgPath
         circleShape.strokeColor = UIColor.red.cgColor
         circleShape.fillColor = UIColor.clear.cgColor
         circleShape.lineWidth = 8
-          // set start and end values
+        // set start and end values
         circleShape.strokeStart = 0.0
         circleShape.strokeEnd = 0.0
-          // add sublayer
+        // add sublayer
         self.infomationCirleEdgeView.layer.addSublayer(circleShape)
     }
 }
