@@ -15,8 +15,6 @@ class MainTableViewController: UIViewController {
             guard let dataSource = dataSource else { return }
             NotificationCenter.default.post(name: Notification.Name.init(rawValue: "reloadTableCellDataWhenShake"), object: nil, userInfo: ["dataSource": dataSource])
         }
-        
-        
     }
     // config view
     override func viewDidLoad() {
