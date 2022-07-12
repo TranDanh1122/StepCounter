@@ -36,7 +36,7 @@ class CollectionViewCustomLayout: UICollectionViewFlowLayout {
         return CGPoint(x: offset, y: proposedContentOffset.y)
     }
 }
-protocol OneWeekStepDetailCellDelegate: class {
+protocol OneWeekStepDetailCellDelegate: AnyObject {
     func didScrollToAnotherItem(currentPage: Int)
 }
 class OneWeekStepDetailCell: UITableViewCell {
